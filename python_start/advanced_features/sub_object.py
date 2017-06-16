@@ -57,4 +57,5 @@ print("ABCDEFGHIJKL"[0::2])#ACEGIK
 在很多编程语言中，针对字符串提供了很多各种截取函数（例如，substring），其实目的就是对字符串切片。Python没有针对字符串的截取函数，只需要切片一个操作就可以完成，非常简单。
 """
 
-
+obj = {"name":"jack","age":24,"addr":"tianjin"}
+#print(obj[0:1])#TypeError: unhashable type: 'slice'
