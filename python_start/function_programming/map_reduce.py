@@ -65,5 +65,24 @@ L=['adam', 'LISA', 'barT']
 print(list(map(upper,L)))#['Adam', 'Lisa', 'Bart']
 
 
+L=[1,3,5,7,9]
+def fn(x, y):
+    return x*y
+print('乘积=',reduce(fn,L))#乘积= 945
+print('乘积(lambda)=',reduce(lambda x,y:x*y,L))#乘积(lambda)= 945
 
+print(list("abgdc"))#['a', 'b', 'g', 'd', 'c']
 
+import string
+def str2double(str):
+    pos = len(str)-str.index(".")-1
+    #print("pos=",pos)
+    str2 = str.replace(".","")
+    #print('str2=',str2)
+    def f1(x,y):
+        return x*10 + y
+    def f2(x):
+        return int(x)
+    return reduce(f1,map(f2,str2))*(10**-pos)
+
+print("str2double('1232.435')=",str2double("1232.435"))
