@@ -34,12 +34,44 @@ print(now)#<function log.<locals>.wrapper at 0x000001DEBF7A52F0>
 print(now.__name__)#wrapper
 
 
+def log(text):
+    def decorator(func):
+        def wrapper(*args,**kw):
+            print("%s %s():" % (text,func.__name__))
+            return func(*args,**kw)
+        return wrapper
+    return decorator
+
+print("=======execute=======")
+@log('execute')
+def now():
+    print('2017-7-5')
+
+now()
+
+print("=======log('execute')(now)=======")
+f = log('execute')(now)
+print(f.__name__)#wrapper
+#f()
 
 
+import functools
+def log(func):
+    @functools.wraps(func)
+    def wrapper(*args,**kw):
+        print('call %s():' % func.__name__)
+        return func(*args,**kw)
+    return wrapper
 
 
-
-
+def log(text):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kw):
+            print('%s %s():' % (text, func.__name__))
+            return func(*args, **kw)
+        return wrapper
+    return decorator
 
 
 
