@@ -1,4 +1,5 @@
 #datetime是Python处理日期和时间的标准库
+#encoding=utf-8
 
 """
 注意到datetime是模块，datetime模块还包含一个datetime类，
@@ -38,15 +39,19 @@ print(dt.timestamp())#1340170840.000008
 print("*="*30)
 
 t = 0.8
+#默认时区是东8区
+#本地时间
 print(datetime.fromtimestamp(t))#1970-01-01 08:00:00.800000
+#UTC时间
+print(datetime.utcfromtimestamp(t))#1970-01-01 00:00:00.800000
 
 
+print("*="*30)
+#str转化为datetime
+cday = datetime.strptime('2016-11-23 13:59:00', '%Y-%m-%d %H:%M:%S')
+print(cday)#2016-11-23 13:59:00
 
-
-
-
-
-
-
-
-
+now = datetime.now()
+date_str = now.strftime(r'%b %d %Y %H:%M:%S')
+print(date_str)
+print(now.strftime('%A'))
