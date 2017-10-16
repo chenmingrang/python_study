@@ -55,3 +55,40 @@ now = datetime.now()
 date_str = now.strftime(r'%b %d %Y %H:%M:%S')
 print(date_str)
 print(now.strftime('%A'))
+
+print('*='*10, 'datetime加减', '*='*10)
+
+from datetime import datetime, timedelta
+now = datetime.now()
+print(now+timedelta(hours=20))#叫10个小时
+print(now+timedelta(hours=-6))#减6个小时
+print(now - timedelta(hours=6))
+print(now + timedelta(weeks=-2))#两周前的时间
+
+#使用timedelta你可以很容易地算出前几天和后几天的时刻。
+
+
+print('*='*10, '本地时间转换为UTC时间', '*='*10)
+
+from datetime import timezone
+tz_utc_8 = timezone(timedelta(hours= 8))# 创建时区UTC+8:00
+now = datetime.now()
+dt = now.replace(tzinfo= tz_utc_8)
+print(dt)
+
+print('*='*10, '时区转换', '*='*10)
+
+utc_dt = datetime.utcnow().replace(tzinfo= timezone.utc)
+print('utc_dt = ', utc_dt)
+local_dt = utc_dt.astimezone(timezone(timedelta(hours=8)))
+print('local_dt = ', local_dt)
+
+tokyo_dt = utc_dt.astimezone(timezone(timedelta(hours=9)))
+print(tokyo_dt)
+tokyo_dt2 = local_dt.astimezone(timezone(timedelta(hours=9)))
+print(tokyo_dt2)
+
+"""
+利用带时区的datetime，通过astimezone()方法，可以转换到任意时区。
+不是必须从UTC+0:00时区转换到其他时区，任何带时区的datetime都可以正确转换，例如上述local_dt到tokyo_dt的转换
+"""
