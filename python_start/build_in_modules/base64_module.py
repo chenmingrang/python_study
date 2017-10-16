@@ -45,3 +45,6 @@ def safe_base64_encode(en_str):
 
 print(safe_base64_encode('abcd'))#b'YWJjZA'
 print(safe_base64_decode('YWJjZA'))#b'abcd'
+print(base64.b64encode('abcde'.encode('utf-8')))#b'YWJjZGU='
+print(safe_base64_encode('abcde'))#b'YWJjZGU'
+print(safe_base64_decode('YWJjZGU'))#b'abcde'
