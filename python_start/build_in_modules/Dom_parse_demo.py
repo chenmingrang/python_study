@@ -136,3 +136,19 @@ def handleToc(slides):
         print("<p>%s</p>" % getText(title.childNodes))
 
 handleSlideshow(dom)
+
+
+# xml.dom.pulldom
+print('*='*20, 'xml.dom.pulldom', '*='*20)
+from xml.dom import pulldom
+from collections import Iterator
+xml = '<html><title>Foo</title><p>Some text <div>and more</div></p></html>'
+doc = pulldom.parseString(xml)
+print(isinstance(doc, Iterator))
+for event, node in doc:
+    if event == pulldom.START_ELEMENT and node.tagName == 'p':
+        # Following statement only prints '<p/>'
+        print(node.toxml())
+        doc.expandNode(node)
+        # Following statement prints node with all its children '<p>Some text <div>and more</div></p>'
+        print(node.toxml())
