@@ -7,7 +7,7 @@ from email.header import Header
 #构造一个最简单的纯文本邮件('text/plain')
 msg = MIMEText('hello, use Python send', 'plain', 'utf-8')
 msg['Subject'] = Header("hello world", 'utf-8')
-msg['From'] = 'chenmingrang@126.com>'
+msg['From'] = 'chenmingrang@126.com'
 msg['To'] = "819718662@qq.com"
 
 from_addr = input('From:')
@@ -17,6 +17,7 @@ smtp_server = "smtp.126.com"
 to_addr = "819718662@qq.com"
 
 import smtplib
+#SMTP协议默认端口是25
 server = smtplib.SMTP(smtp_server, 25)
 server.set_debuglevel(1)
 server.login(from_addr, passwd)
