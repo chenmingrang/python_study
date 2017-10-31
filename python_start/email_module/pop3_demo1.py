@@ -9,11 +9,11 @@ POP3协议收取的不是一个已经可以阅读的邮件本身，而是邮件�
 import poplib
 from email.parser import Parser
 
-email = "819718662@qq.com"
+email = "chenmingrang@qq.com"
 password = input('password:')
-pop3_host = "pop.qq.com"
+pop3_host = "pop.126.com"
 
-server = poplib.POP3(pop3_host, port=995)
+server = poplib.POP3(pop3_host, port=110)
 server.set_debuglevel(1)
 print(server.getwelcome().decode("utf-8"))
 
@@ -38,4 +38,3 @@ msg = Parser().parsestr(msg_content)
 #删除最后一封邮件
 server.dele(index)
 server.quit()
-
