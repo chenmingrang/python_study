@@ -20,6 +20,13 @@ def signin():
         return render_template('signin-ok.html', username=username)
     return render_template('form.html', message='Bad username or Password', username=username)
 
+
+@app.route('/test', methods=['GET'])
+def test():
+    l1 = [1, 2, 3, 4, 5]
+    return render_template("test.html", res_list = l1)
+
+
 if __name__ == '__main__':
     app.run()
 
