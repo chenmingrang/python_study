@@ -1,7 +1,7 @@
 #变量的作用域
 #命名空间（变量的作用范围）
 
-from study_further.decorator_with_decArgs import test2
+from study_further.python_core.decorator_with_decArgs import test2
 test2()
 
 #全局
