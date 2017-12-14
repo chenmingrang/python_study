@@ -10,6 +10,8 @@ def worker(msg):
 
 if __name__ == '__main__':
     po=Pool(3) #定义一个进程池，最大进程数3
+    #异步执行
+    print("=" * 20 + "异步执行" + "=" * 20)
     for i in range(0,10):
         #Pool.apply_async(要调用的目标,(传递给目标的参数元祖,))
         #每次循环将会用空闲出来的子进程去调用目标
@@ -20,6 +22,8 @@ if __name__ == '__main__':
     po.join() #等待po中所有子进程执行完成，必须放在close语句之后
     print("-----end-----")
 
+    #同步处理
+    print("="*20+"同步执行"+"="*20)
     po2 = Pool(4)
     for i in range(10):
         po2.apply(worker, (i,))
