@@ -1,5 +1,5 @@
-from multiprocessing import process, Pool
-import os, sys
+from multiprocessing import process, Pool, Manager
+import os, sys, time
 import stat
 
 
@@ -11,7 +11,8 @@ def delFolder(rootdir):
     filelist = os.listdir(rootdir)
     for file in filelist:
         file_path = os.path.join(rootdir, file)
-        print(file_path)
+        # print(file_path)
+        #修改文件权限
         os.chmod(file_path, stat.S_IWRITE)
         if os.path.isdir(file_path):
             if not os.listdir(file_path):
@@ -20,19 +21,26 @@ def delFolder(rootdir):
                 delFolder(file_path)
         else:
             os.remove(file_path)
+    #2.删除文件
     os.rmdir(rootdir)
-    # for root, dirs, files in os.walk(rootdir, topdown=False):
-    #     for name in files:
-    #         os.chmod(os.path.join(root, name), stat.S_IWRITE)
-    #         os.remove(os.path.join(root, name))
 
-def getFiles(folder):
-    os.listdir(folder)
+#获取一个文件夹内所有的文件
+def getFiles(rootdir):
+    fileList = []
+    dirList = []
+    for root, dirs, files in os.walk(rootdir, topdown=False):
+        for file in files:
+            fileList.append(os.path.join(root, file))
+        for item in dirs:
+            dirList.append(os.path.join(root, item))
+    return fileList, dirList
 
-def copyFile(file, new_path):
+#文件copy
+def copyFile(filename, oldFolderName, newFolderName, queue):
     #完成一个文件的copy
-    fr = open(file)
-    fw = open(new_path, 'w')
+    queue.put("%s 正在传输。。。。。。" % filename)
+    fr = open(filename)
+    fw = open(filename.replace(oldFolderName, newFolderName), 'w')
 
     content = fr.read()
     fw.write(content)
@@ -40,22 +48,36 @@ def copyFile(file, new_path):
     fr.close()
     fw.close()
 
-sys.setrecursionlimit(100)
 
-oldFolderName = input("请输入要复制的文件夹名称：")
-newFolderName = oldFolderName + "_test"
+if __name__ == "__main__":
+    start_time = time.time()
+    sys.setrecursionlimit(100)
+
+    oldFolderName = "E:\hangzhouYunQi2017ppt-master"
+    newFolderName = oldFolderName + "_bak"
 
 
-#创建一个文件夹
-flag = os.path.exists(newFolderName)
-if flag:
-    delFolder(newFolderName)
-os.mkdir(newFolderName)
+    #创建一个文件夹
+    flag = os.path.exists(newFolderName)
+    if flag:
+        delFolder(newFolderName)
+    os.mkdir(newFolderName)
 
-#获取old文件夹中所有的文件夹
-filenames = os.listdir(oldFolderName)
-# print(filenames)
+    #获取old文件夹中所有的文件夹
+    tu = getFiles(oldFolderName)
+    for item in tu[1]:
+        item = item.replace(oldFolderName, newFolderName)
+        os.makedirs(name=item, exist_ok=True)
 
-# pool = Pool(6)
-# pool.apply_async()
-#将文件copy到新的文件夹中
+    pool = Pool(5)
+    queue = Manager().Queue()
+    for filename in tu[0]:
+        pool.apply_async(copyFile, args = (filename, oldFolderName, newFolderName, queue))
+
+    num = 0
+    while num < len(tu[0]):
+        print(queue.get(True))
+        num += 1
+
+    end_time = time.time()
+    print('use %0.2f seconds to complete!' % (end_time - start_time))
